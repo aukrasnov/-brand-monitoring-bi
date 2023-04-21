@@ -1,6 +1,6 @@
 **Problem**
 
-Businesses need a tool for reputation management. They want to know how often their brand is mentioned on the web, and what people are saying about it. They want to know what people are saying about their competitors, and what people are saying about their industry. 
+Businesses need a tool for reputation management. They want to know how often their brand is mentioned on the web, and what people are saying about it. They want to know what people are saying about their competitors, and what people are saying about their industry.
 
 **Solution**
 

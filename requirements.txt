@@ -1,1 +1,13 @@
 requests
+confluent-kafka
+pyspark==3.2.0
+py4j==0.10.9.2
+findspark
+pandas
+pyarrow
+openai
+google-auth==1.29.0
+google-cloud-storage==1.37.1
+google-cloud-bigquery==2.17.0
+
+
