@@ -36,11 +36,16 @@ terraform init
 terraform apply
 ```
 
+- Setup python virtual environment activate it and install dependencies
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
 - Start running producer and consumer
-```
-python producer.py
-python consumer.py
-```
+  - `python3 producer.py` 
+  - `python3 consumer.py`
 
 - Create looker project 
 - Data is in table. Charts are in looker
