@@ -1,16 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import openai
-import os
+import json
 
-OPEN_API_KEY = os.environ["OPEN_API_KEY"]
+with open('terraform/terraform.tfstate') as f:
+    config = data = json.load(f)
 
-RULES = '''Я буду задавать вопросы о  %(name)s. Отвечай как сценарист видео рассказывающего о %(name)s в третьем лице как о профессионале. Видео должно оставлять хорошее впечатление. Ответ должен включать закадровый голос не больше двух предложений и описание слайда не больше 6 слов. В каде должен описываться обычный предмет, который можно купить в магазине или пейзаж. Формат ответов
-Закадровый голос: текст для закадрового голоса для первой сцены
-Кадр: короткое описание не больше 6 слов
-'''
-
-INITIAL_QUESTION = '''Первый вопрос: Какие услуги оказывает %(name)s?'''
+OPEN_API_KEY = config['outputs']['open_api_key']['value']
 
 
 def chat2msg(messages_history):

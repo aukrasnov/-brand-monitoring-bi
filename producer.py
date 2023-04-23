@@ -1,13 +1,15 @@
+import json
 import requests
 from confluent_kafka import Producer
 import time
-import os
 import logging
 
+with open('terraform/terraform.tfstate') as f:
+    config = data = json.load(f)
 
-KAFKA_BOOTSTRAP_SERVER = os.getenv('KAFKA_BOOTSTRAP_SERVER')
-KAFKA_KEY = os.getenv('KAFKA_KEY')
-KAFKA_SECRET = os.getenv('KAFKA_SECRET')
+KAFKA_BOOTSTRAP_SERVER = config['outputs']['kafka_endpoint']['value'].replace('SASL_SSL://', '')
+KAFKA_KEY = config['outputs']['kafka_api_key_id']['value']
+KAFKA_SECRET = config['outputs']['kafka_api_key_secret']['value']
 
 
 def extract(search_phrase):

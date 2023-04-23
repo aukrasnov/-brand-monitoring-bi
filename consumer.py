@@ -1,5 +1,5 @@
+import json
 import os
-
 import findspark
 findspark.init()
 from pyspark.sql import SparkSession
@@ -8,11 +8,15 @@ from pyspark.sql.functions import from_json, col, expr
 from transform import get_relevance_mark
 
 
-KAFKA_BOOTSTRAP_SERVER = os.getenv('KAFKA_BOOTSTRAP_SERVER')
-KAFKA_KEY = os.getenv('KAFKA_KEY')
-KAFKA_SECRET = os.getenv('KAFKA_SECRET')
-GOOGLE_APPLICATION_CREDENTIALS = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-PROJECT_ID = os.environ['PROJECT_ID']
+with open('terraform/terraform.tfstate') as f:
+    config = data = json.load(f)
+
+KAFKA_BOOTSTRAP_SERVER = config['outputs']['kafka_endpoint']['value'].replace('SASL_SSL://', '')
+KAFKA_KEY = config['outputs']['kafka_api_key_id']['value']
+KAFKA_SECRET = config['outputs']['kafka_api_key_secret']['value']
+GOOGLE_APPLICATION_CREDENTIALS = 'google-services.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_APPLICATION_CREDENTIALS
+PROJECT_ID = config['outputs']['gcp_project_id']['value']
 
 
 schema = StructType([
@@ -34,6 +38,8 @@ if __name__ == '__main__':
     # Replace these with your own values
     dataset_id = "reputation"
     table_id = "reddit_posts"
+    # Set the Kafka topic and bootstrap servers
+    topic_name = "reddit"
 
     spark = SparkSession.builder \
         .appName("spark") \
@@ -47,9 +53,6 @@ if __name__ == '__main__':
         .config("spark.jars", "gcs-connector-hadoop3-2.2.10-shaded.jar") \
         .config("spark.executor.cores", "1") \
         .getOrCreate()
-
-    # Set the Kafka topic and bootstrap servers
-    topic_name = "reddit"
 
     # Read data from the Kafka topic
     df = spark.readStream \
@@ -80,8 +83,8 @@ if __name__ == '__main__':
     query = df.writeStream \
         .format("bigquery") \
         .option("table", f"{PROJECT_ID}.{dataset_id}.{table_id}") \
-        .option("checkpointLocation", "gs://de-zoomcamp-4/checkpoints/") \
-        .option("temporaryGcsBucket", "de-zoomcamp-4/tmp") \
+        .option("checkpointLocation", "gs://de-zoomcamp-project-bucket/checkpoints/") \
+        .option("temporaryGcsBucket", "de-zoomcamp-project-bucket/tmp") \
         .outputMode("append") \
         .start()
 
