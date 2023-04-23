@@ -1,4 +1,5 @@
 **Problem**
+
 This tool is for small companies which want to tell people about their product.
 It helps finding posts in reddit which are relevant to the product.
 Then the founder can write some useful comment on the post and tell people about the product.
@@ -17,14 +18,14 @@ Currently there is only one data source - reddit. It is possible to add more dat
 
 **Instructions to run it**
 
-- Clone this repo and download gcs connector
+- Clone this repo and download gcs connector jar
 ```
 git pull
 cd brand-monitoring-bi
 wget https://repo1.maven.org/maven2/com/google/cloud/bigdataoss/gcs-connector/hadoop3-2.2.10/gcs-connector-hadoop3-2.2.10-shaded.jar
 ```
 
-- Create google project and store credentials in `brand-monitoring-bi/google-services.json` file
+- Create [google project](https://console.cloud.google.com) and store credentials in `brand-monitoring-bi/google-services.json` file
 - Create https://confluent.cloud enviroment
 - Copy `terraform/variables.tpl.tf` to `terraform/variables.tf` and replace `<YOUR VALUE HERE>` with your values
 
