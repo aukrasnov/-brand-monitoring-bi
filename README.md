@@ -15,6 +15,7 @@ Currently there is only one data source - reddit. It is possible to add more dat
 ![stack.png](stack.png)
 
 [Charts can be seen here](https://lookerstudio.google.com/u/0/reporting/d6695ed0-35b6-4dc9-8f12-50eda7310086/page/WGaND)
+![viz.png](viz.png)
 
 **Instructions to run it**
 
@@ -49,3 +50,8 @@ pip install -r requirements.txt
 
 - Create visualization. An example can be seen here. 
   - lookerstudio.google.com does not support git versioning yet. So you need to do it manually.
+
+**Additional**
+Currenly chatgpt prompt for dog company is hardcoded. It can be changed in `transform.py line 26` file.
+And search phrase for reddit is hardcoded in `producer.py line 75` file.
+It can be changed.
