@@ -47,5 +47,5 @@ pip install -r requirements.txt
   - `python3 producer.py` 
   - `python3 consumer.py`
 
-- Create looker project 
-- Data is in table. Charts are in looker
+- Create visualization. An example can be seen here. 
+  - lookerstudio.google.com does not support git versioning yet. So you need to do it manually.
