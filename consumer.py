@@ -3,7 +3,7 @@ import os
 import findspark
 findspark.init()
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StringType, StructField, StructType, FloatType, IntegerType
+from pyspark.sql.types import StringType, StructField, StructType, IntegerType, TimestampType
 from pyspark.sql.functions import from_json, col, expr
 from transform import get_relevance_mark
 
@@ -24,7 +24,7 @@ schema = StructType([
     StructField("subreddit", StringType()),
     StructField("selftext", StringType()),
     StructField("title", StringType()),
-    StructField("created_utc", FloatType()),
+    StructField("created_utc", TimestampType()),
     StructField("url", StringType()),
 ])
 

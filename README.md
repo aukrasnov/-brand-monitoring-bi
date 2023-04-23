@@ -14,6 +14,8 @@ Currently there is only one data source - reddit. It is possible to add more dat
 [Producer](producer.py) for Kafka is written in python. [Consumer](consumer.py) is written in pySpark
 ![stack.png](stack.png)
 
+Target table is partitioned by `date` column. And clustered by `subreddit`.
+
 [Charts can be seen here](https://lookerstudio.google.com/u/0/reporting/d6695ed0-35b6-4dc9-8f12-50eda7310086/page/WGaND)
 ![viz.png](viz.png)
 

@@ -50,7 +50,7 @@ def load(list_of_dicts, topic):
             p['subreddit'] = post['data']['subreddit']
             p['selftext'] = post['data']['selftext']
             p['title'] = post['data']['title']
-            p['created_utc'] = post['data']['created_utc']
+            p['created_utc'] = int(post['data']['created_utc'])
             p['url'] = post['data']['url']
             producer.produce(topic, key=post['data']['id'], value=str(p).encode('utf-8'))
             pushed_posts.append(post['data']['id'])

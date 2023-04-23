@@ -70,6 +70,14 @@ resource "google_bigquery_table" "reddit_posts" {
   deletion_protection = false
   depends_on = [google_bigquery_dataset.reputation]
 
+  time_partitioning {
+    type = "DAY"
+    field = "created_utc"
+    require_partition_filter = false
+  }
+
+  clustering = ["subreddit"]
+
   schema = jsonencode([
     {
       "name": "id",
@@ -93,7 +101,7 @@ resource "google_bigquery_table" "reddit_posts" {
     },
     {
       "name": "created_utc",
-      "type": "FLOAT64",
+      "type": "TIMESTAMP",
       "mode": "NULLABLE"
     },
     {
