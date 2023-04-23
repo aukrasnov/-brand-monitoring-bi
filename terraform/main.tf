@@ -22,7 +22,6 @@ resource "google_project_service" "cloud_resource_manager" {
   project = var.project
   service = "cloudresourcemanager.googleapis.com"
   disable_dependent_services = true
-  disable_on_destroy         = false
 }
 
 # Enable required services for the project
@@ -30,7 +29,6 @@ resource "google_project_service" "bigquery" {
   project = var.project
   service = "bigquery.googleapis.com"
   disable_dependent_services = true
-  disable_on_destroy         = false
   depends_on = [google_project_service.cloud_resource_manager]
 }
 
@@ -38,7 +36,6 @@ resource "google_project_service" "storage" {
   project = var.project
   service = "storage.googleapis.com"
   disable_dependent_services = true
-  disable_on_destroy         = false
   depends_on = [google_project_service.cloud_resource_manager]
 }
 
@@ -146,6 +143,10 @@ data "confluent_kafka_cluster" "main" {
 resource "confluent_service_account" "app-manager" {
   display_name = "app-${var.topic_name}-manager"
   description  = "Service account to manage ${confluent_kafka_cluster.main.id} Kafka cluster"
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 resource "confluent_role_binding" "app-manager-kafka-cluster-admin" {
@@ -178,55 +179,7 @@ resource "confluent_api_key" "app-manager-kafka-api-key" {
   ]
 }
 
-resource "confluent_service_account" "app-consumer" {
-  display_name = "app-${var.topic_name}-consumer"
-  description  = "Service account to consume from '${var.topic_name}' topic of ${confluent_kafka_cluster.main.id} Kafka cluster"
-}
 
-resource "confluent_api_key" "app-consumer-kafka-api-key" {
-  display_name = "${confluent_service_account.app-consumer.display_name}-kafka-api-key"
-  description  = "Kafka API Key that is owned by ${confluent_service_account.app-consumer.display_name} service account"
-  owner {
-    id          = confluent_service_account.app-consumer.id
-    api_version = confluent_service_account.app-consumer.api_version
-    kind        = confluent_service_account.app-consumer.kind
-  }
-
-  managed_resource {
-    id          = data.confluent_kafka_cluster.main.id
-    api_version = data.confluent_kafka_cluster.main.api_version
-    kind        = data.confluent_kafka_cluster.main.kind
-
-    environment {
-      id = var.environment_id
-    }
-  }
-}
-
-resource "confluent_service_account" "app-producer" {
-  display_name = "app-${var.topic_name}-producer"
-  description  = "Service account to produce to '${var.topic_name}' topic of ${confluent_kafka_cluster.main.id} Kafka cluster"
-}
-
-resource "confluent_api_key" "app-producer-kafka-api-key" {
-  display_name = "${confluent_service_account.app-producer.display_name}-kafka-api-key"
-  description  = "Kafka API Key that is owned by ${confluent_service_account.app-producer.display_name} service account"
-  owner {
-    id          = confluent_service_account.app-producer.id
-    api_version = confluent_service_account.app-producer.api_version
-    kind        = confluent_service_account.app-producer.kind
-  }
-
-  managed_resource {
-    id          = data.confluent_kafka_cluster.main.id
-    api_version = data.confluent_kafka_cluster.main.api_version
-    kind        = data.confluent_kafka_cluster.main.kind
-
-    environment {
-      id = var.environment_id
-    }
-  }
-}
 
 resource "confluent_kafka_topic" "main" {
   kafka_cluster {

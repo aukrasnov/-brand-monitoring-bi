@@ -27,7 +27,7 @@ wget https://repo1.maven.org/maven2/com/google/cloud/bigdataoss/gcs-connector/ha
 
 - Create [google project](https://console.cloud.google.com) and store credentials in `brand-monitoring-bi/google-services.json` file
 - Create https://confluent.cloud enviroment
-- Copy `terraform/variables.tpl.tf` to `terraform/variables.tf` and replace `<YOUR VALUE HERE>` with your values
+- Copy `terraform/variables.tf.example` to `terraform/variables.tf` and replace `<YOUR VALUE HERE>` with your values
 
 - Create infrastructure using terraform
 ```
@@ -36,7 +36,7 @@ terraform init
 terraform apply
 ```
 
-- Setup python virtual environment activate it and install dependencies
+- In main directory `/brand-monitoring-bi` ySetup python virtual environment activate it and install dependencies
 ```
 python3 -m venv venv
 source venv/bin/activate
